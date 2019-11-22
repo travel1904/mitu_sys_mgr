@@ -9,9 +9,9 @@ from myadmin.order_mgr_view import *
 app_name = 'myadmin'
 
 urlpatterns = [
-    path(r'', index_view, name='index'),
-    path('regist/', regist_view,name='regist'),
-    path('login/', login_view, name='login'),
+    path('', index_view, name='index'),
+    # path('regist/', regist_view, name='regist'),
+    path('login/', to_login, name='login'),
     path('logout/', logout_view, name='logout'),
     path('role/', RoleView.as_view()),
     path('user/', UserView.as_view()),

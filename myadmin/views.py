@@ -1,6 +1,6 @@
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
-
+from common import make_pwd
 from myadmin.models import SysUser
 
 
@@ -8,32 +8,38 @@ def index_view(request: HttpRequest):
 	return render(request, 'index.html')
 
 
-def login_view(request: HttpRequest):
-    if request.method == "GET":
-        return render(request, 'login.html')
-    elif request.method == "POST":
-        logname = request.POST.get('logname')
-        logpwd = request.POST.get('logpwd')
-        print("用户名：",logname)
-        try:
-            log = SysUser.objects.get(name=logname)
-            if log.name == logname and log.auth_string == logpwd:
-                response = redirect('/')
-                request.session['login_user'] = logname
-                response.set_cookie('login_status', 'success')
-                return response
-            else:
-                print("用户名或密码错误！")
-                return render(request, 'login.html')
-        except:
-            print("该用户不存在，请重新输入！")
-            return render(request, 'login.html')
+def to_login(request: HttpRequest):
+    if request.method == "POST":
+        # 获取用户名和口令
+        name = request.POST.get('username', '')
+        pwd = request.POST.get('password', '')
+        print(name,pwd)
+        if any((not name, not pwd, len(name) == 0, len(pwd) == 0)):
+            error = '用户名或密码不能为空!'
+        else:
+            ret = SysUser.objects.filter(name=name, auth_string=make_pwd(pwd))
+            if ret.exists():
+                login_user = ret.first()
+
+                # 将登录的用户信息存在session中
+                request.session['login_user'] = {
+                    'id': login_user.id,
+                    'name': login_user.name,
+                    'role_name': login_user.role.name,
+                    'role_code': login_user.role.code
+                }
+
+                return redirect('/')
+
+            error = "用户名或密码错误!"
+
+    return render(request, 'login.html', locals())
 
 
-def regist_view(request: HttpRequest):
-	return render(request, 'register.html')
+# def regist_view(request: HttpRequest):
+# 	return render(request, 'register.html')
 
 
 def logout_view(request: HttpRequest):
-    request.session.flush()
+    request.session.pop('login_user')
     return redirect('/login/')

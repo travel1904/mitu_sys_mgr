@@ -3,10 +3,14 @@ from django.shortcuts import redirect
 
 
 def valid_login(view_func):
-    not_valid_paths = ['/login/', '/register/']
-
+    not_valid_paths = ['/login/', '/regist/']
     def wrapper(request: HttpRequest, *args, **kwargs):
-        if 'login_user' not in request.session.keys() and request.path not in not_valid_paths:
+        print('--valid_login---', request.path)
+        # 验证当前请求是否在登录之后
+        if all((
+                'login_user' not in request.session.keys(),
+                 request.path not in not_valid_paths
+                )):
             return redirect('/login/')
         return view_func(request, *args, **kwargs)
     return wrapper

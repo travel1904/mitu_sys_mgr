@@ -114,3 +114,26 @@ STATICFILES_DIRS = [
 # 上传文件存放位置
 MEDIA_URL = '/s/m/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+
+
+# 配置缓存方案
+CACHES = {
+    'redis': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/0'
+    },
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'cache.dat',
+        'TIMEOUT': 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
+# 配置session 存储方案
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_COOKIE_NAME = 'session_id'
+SESSION_COOKIE_AGE = 604800  # 一周的有效时长(秒)
+SESSION_CACHE_ALIAS = 'redis'  # 缓存方案名，默认是default
