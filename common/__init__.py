@@ -11,3 +11,6 @@ def make_pwd(txt):
 if __name__ == '__main__':
     pwd = make_pwd('jsq123')
     print(pwd, len(pwd))
+
+
+

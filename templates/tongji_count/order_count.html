@@ -1,0 +1,155 @@
+{% extends 'basic/base.html' %}
+{% block content_nav_home %}统计信息{% endblock %}
+{% block content_nav %}
+    <li>订单统计</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="froms" style="width: 100%;
+        height: 80%;
+        {#position:relative!important;#}
+        background-color: rgba(255,255,255,0.3);
+        padding: 10px 10px;
+        z-index:0">
+        <div style="z-index: 1;box-sizing: border-box">
+            <table class="table table-bordered table-striped text-center bg-info" width="600" style="box-sizing: border-box;overflow: hidden;">
+                <thead >
+                <tr class="info1">
+                    <th class="text-center">订单量</th>
+                    <th class="text-center">订单分析</th>
+                </tr>
+                <tr class="info1">
+                    <th class="text-center">
+                        <div id="main" style="width: 400px;height:450px;">
+                            <div class="container">
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.js"></script>
+                            <script type="text/javascript">
+                                // 基于准备好的dom，初始化echarts实例
+                                var myChart = echarts.init(document.getElementById('main'));
+
+                                // 指定图表的配置项和数据
+                                var option = {
+                                        title:{
+                                            text: '周订单统计',
+                                            x:'center'
+                                        },
+                                        color: ['#3398DB'],
+                                        tooltip : {
+                                            trigger: 'axis',
+                                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                            }
+                                        },
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+                                        xAxis : [
+                                            {
+                                                type : 'category',
+                                                data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                                axisTick: {
+                                                    alignWithLabel: true
+                                                }
+                                            }
+                                        ],
+                                        yAxis : [
+                                            {
+                                                type : 'value'
+                                            }
+                                        ],
+                                        series : [
+                                            {
+                                                name:'米途订单',
+                                                type:'bar',
+                                                barWidth: '60%',
+                                                data:[567, 665, 456, 872, 690, 330, 454]
+                                            }
+                                        ]
+                                    };
+
+                                // 使用刚指定的配置项和数据显示图表。
+
+                                myChart.setOption(option);
+                                //window.onresize = myChart.resize;
+                                window.addEventListener('resize',function(){
+                                    myChart.resize();
+                                });
+                            </script>
+                            </div>
+                        </div>
+                    </th>
+                    <th class="text-center">
+                        <div id="main1" style="width: 400px;height:450px;">
+                        <div class="container">
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.js"></script>
+                            <script type="text/javascript">
+                                // 基于准备好的dom，初始化echarts实例
+                                var myChart = echarts.init(document.getElementById('main1'));
+
+                                // 指定图表的配置项和数据
+                                var option = {
+                                        title:{
+                                            text: '周订单分析',
+                                            x:'center'
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                                        },
+                                        yAxis: {
+                                            type: 'value'
+                                        },
+                                        series: [{
+                                            data: [567, 665, 456, 872, 690, 330, 454],
+                                            type: 'line',
+                                            symbol: 'triangle',
+                                            symbolSize: 20,
+                                            lineStyle: {
+                                                normal: {
+                                                    color: 'green',
+                                                    width: 4,
+                                                    type: 'dashed'
+                                                }
+                                            },
+                                            itemStyle: {
+                                                normal: {
+                                                    borderWidth: 3,
+                                                    borderColor: 'yellow',
+                                                    color: 'blue'
+                                                }
+                                            }
+                                        }]
+                                    };
+
+
+
+                                // 使用刚指定的配置项和数据显示图表。
+
+                                myChart.setOption(option);
+                                //window.onresize = myChart.resize;
+                                window.addEventListener('resize',function(){
+                                    myChart.resize();
+                                });
+                            </script>
+                        </div>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+           </table>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

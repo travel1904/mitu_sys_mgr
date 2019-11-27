@@ -1,11 +1,11 @@
 {% extends 'basic/base.html' %}
-{% block content_nav_home %}订单管理{% endblock %}
+{% block content_nav_home %}系统管理{% endblock %}
 {% block content_nav %}
-    <li>订单管理</li>
+    <li>系统通知</li>
 {% endblock %}
 
 {% block content %}
-{#    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>#}
+    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>
     <div class="froms" style="width: 100%;
         height: 80%;
         {#position:relative!important;#}
@@ -16,32 +16,24 @@
             <table class="table table-bordered table-striped text-center bg-info" width="600" style="box-sizing: border-box;overflow: hidden;">
                 <thead >
                 <tr class="info">
-                    <th class="text-center" style="">订单ID</th>
-                    <th class="text-center">创建时间</th>
-                    <th class="text-center">支付时间</th>
-                    <th class="text-center">完成时间</th>
-                    <th class="text-center">支付状态</th>
-                    <th class="text-center">申请退款时间</th>
-                    <th class="text-center">退款时间</th>
-                    <th class="text-center">是否评论</th>
+                    <th class="text-center" style="">系统ID</th>
+                    <th class="text-center">通知名称</th>
+                    <th class="text-center">通知简介</th>
+                    <th class="text-center">内容详情</th>
                     <th class="text-center" width="200px">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for role in roles %}
                     <tr>
-                        <td>{{ role.order_id }}</td>
-                        <td>{{ role.get_time }}</td>
-                        <td>{{ role.pay_time }}</td>
-                        <td>{{ role.last_time }}</td>
-                        <td>{{ role.status }}</td>
-                        <td>{{ role.no_need }}</td>
-                        <td>{{ role.return_money_time }}</td>
-                        <td>{{ role.is_talk }}</td>
+                        <td>{{ role.sys_info_id }}</td>
+                        <td>{{ role.title }}</td>
+                        <td>{{ role.info }}</td>
+                        <td>{{ role.info_detail }}</td>
                         <td>
                             <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
-                               onclick="edit({{ role.order_id }},'{{ role.get_time }}', '{{ role.pay_time }}', '{{ role.last_time }}', '{{ role.status }}', '{{ role.return_money_time }}', '{{ role.is_talk }}')">编辑</a>
-                            <a onclick="delete_role({{ role.order_id }},'{{ role.get_time }}', '{{ role.pay_time }}', '{{ role.last_time }}', '{{ role.status }}', '{{ role.return_money_time }}', '{{ role.is_talk }}')" class="btn btn-danger btn-sm">删除</a>
+                               onclick="edit({{ role.sys_info_id }}, '{{ role.title }}', '{{ role.info }}', '{{ role.info_detail }}')">编辑</a>
+                            <a onclick="delete_role({{ role.sys_info_id }}, '{{ role.title }}', '{{ role.info }}', '{{ role.info_detail }}')" class="btn btn-danger btn-sm">删除</a>
                         </td>
                     </tr>
 
@@ -66,24 +58,16 @@
                     <div class="modal-body">
                         <ul>
                             <li>
-                                <label><span>用户ID ：</span></label>
-                                <input type="text" name="ud_id"/>
+                                <label><span>通知名 ：</span></label>
+                                <input type="text" name="title"/>
                             </li>
                             <li>
-                                <label><span>名称 ：</span></label>
-                                <input type="text" name="ticket_name"/>
+                                <label><span>简介 ：</span></label>
+                                <input type="text" name="info"/>
                             </li>
                             <li>
-                                <label><span>面额 ：</span></label>
-                                <input type="text" name="ticket_account"/>
-                            </li>
-                            <li>
-                                <label><span>功能 ：</span></label>
-                                <input type="text" name="ticket_desc"/>
-                            </li>
-                            <li>
-                                <label><span>状态 ：</span></label>
-                                <input type="text" name="is_use"/>
+                                <label><span>内容 ：</span></label>
+                                <input type="text" name="info_detail"/>
                             </li>
                         </ul>
                     </div>
@@ -109,36 +93,20 @@
                     <div class="modal-body">
                         <ul>
                             <li>
-                                <label><span>订单ID ：</span></label>
-                                <input id="edit_id" type="text" name="order_id"/>
+                                <label><span>通知ID ：</span></label>
+                                <input id="edit_id" type="text" name="sys_info_id"/>
                             </li>
                             <li>
-                                <label><span>创建时间 ：</span></label>
-                                <input id="edit_get" type="datetime-local" name="get_time"/>
+                                <label><span>通知名 ：</span></label>
+                                <input id="edit_title" type="text" name="title"/>
                             </li>
                             <li>
-                                <label><span>支付时间 ：</span></label>
-                                <input id="edit_pay" type="datetime-local" name="pay_time"/>
+                                <label><span>简介 ：</span></label>
+                                <input id="edit_info" type="text" name="info"/>
                             </li>
                             <li>
-                                <label><span>完成时间 ：</span></label>
-                                <input id="edit_last" type="datetime-local" name="last_time"/>
-                            </li>
-                            <li>
-                                <label><span>状态 ：</span></label>
-                                <input id="edit_status" type="text" name="status"/>
-                            </li>
-                            <li>
-                                <label><span>申请退款时间 ：</span></label>
-                                <input id="edit_need" type="datetime-local" name="no_need"/>
-                            </li>
-                            <li>
-                                <label><span>退款时间 ：</span></label>
-                                <input id="edit_return" type="datetime-local" name="return_money_time"/>
-                            </li>
-                            <li>
-                                <label><span>是否评论 ：</span></label>
-                                <input id="edit_talk" type="text" name="is_talk"/>
+                                <label><span>内容 ：</span></label>
+                                <input id="edit_info_detail" type="text" name="info_detail"/>
                             </li>
                         </ul>
                     </div>
@@ -173,28 +141,23 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block js %}
     <script>
-        function edit(order_id, get_time, pay_time, last_time, status, no_need, return_money_time, is_talk) {
-            $('#edit_id').val(order_id);
-            $('#edit_get').val(get_time);
-            $('#edit_pay').val(pay_time);
-            $('#edit_last').val(last_time);
-            $('#edit_status').val(status);
-            $('#edit_need').val(no_need);
-            $('#edit_return').val(return_money_time);
-            $('#edit_talk').val(is_talk);
+        function edit(sys_info_id, title, info, info_detail) {
+            $('#edit_id').val(sys_info_id);
+            $('#edit_title').val(title);
+            $('#edit_info').val(info);
+            $('#edit_info_detail').val(info_detail);
 
             $('#edit').modal('show');
         }
         $('.modal-open').find('.modal-backdrop').remove();
         var role_id = 0;
-        function delete_role(order_id,  ){
-            role_id = order_id;
-            $('#msg').html('是否删除 '+ order_id +" ?");
+        function delete_role(sys_info_id, title) {
+            role_id = sys_info_id;
+            $('#msg').html('是否删除 '+ title +" ?");
             $('#info').modal('toggle');
         }
 

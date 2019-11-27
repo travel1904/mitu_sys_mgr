@@ -19,12 +19,12 @@
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-user"></span>&nbsp;<span>{{ request.session.login_user.name }}-{{ request.session.login_user.role_name }}</span><span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-right">
+                <ul class="dropdown-menu dropdown-menu-right" >
                     <li class="text-center"><a href="#"><span class="text-primary">账号设置</span></a></li>
                     <li class="text-center"><a href="#"><span class="text-primary">消息设置</span></a></li>
                     <li class="text-center"><a href="#"><span class="text-primary">帮助中心</span></a></li>
                     <li class="divider"><a href="#"></a></li>
-                    <li class="text-center"><a href="login"><span class="text-primary">退出</span></a></li>
+                    <li class="text-center"><a href="/logout/"><span class="text-primary">退出</span></a></li>
                 </ul>
             </li>
         </ul>

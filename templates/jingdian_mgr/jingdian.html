@@ -1,11 +1,11 @@
 {% extends 'basic/base.html' %}
-{% block content_nav_home %}订单管理{% endblock %}
+{% block content_nav_home %}景点管理{% endblock %}
 {% block content_nav %}
-    <li>订单管理</li>
+    <li>景点信息</li>
 {% endblock %}
 
 {% block content %}
-{#    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>#}
+    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>
     <div class="froms" style="width: 100%;
         height: 80%;
         {#position:relative!important;#}
@@ -16,32 +16,30 @@
             <table class="table table-bordered table-striped text-center bg-info" width="600" style="box-sizing: border-box;overflow: hidden;">
                 <thead >
                 <tr class="info">
-                    <th class="text-center" style="">订单ID</th>
-                    <th class="text-center">创建时间</th>
-                    <th class="text-center">支付时间</th>
-                    <th class="text-center">完成时间</th>
-                    <th class="text-center">支付状态</th>
-                    <th class="text-center">申请退款时间</th>
-                    <th class="text-center">退款时间</th>
-                    <th class="text-center">是否评论</th>
-                    <th class="text-center" width="200px">操作</th>
+                    <th class="text-center" style="">景点ID</th>
+                    <th class="text-center">景点名</th>
+                    <th class="text-center">价格</th>
+                    <th class="text-center">景点描述</th>
+                    <th class="text-center" >图片</th>
+                    <th class="text-center">旅行方式</th>
+                    <th class="text-center" >钻石数</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for role in roles %}
                     <tr>
-                        <td>{{ role.order_id }}</td>
-                        <td>{{ role.get_time }}</td>
-                        <td>{{ role.pay_time }}</td>
-                        <td>{{ role.last_time }}</td>
-                        <td>{{ role.status }}</td>
-                        <td>{{ role.no_need }}</td>
-                        <td>{{ role.return_money_time }}</td>
-                        <td>{{ role.is_talk }}</td>
+                        <td>{{ role.v_id }}</td>
+                        <td>{{ role.name }}</td>
+                        <td>{{ role.price }}</td>
+                        <td>{{ role.v_desc }}</td>
+                        <td><img style="height: 50px; width: 100px" src={{ role.v_pic }}></td>
+                        <td>{{ role.travel_way }}</td>
+                        <td>{{ role.diamonds }}</td>
+
                         <td>
                             <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
-                               onclick="edit({{ role.order_id }},'{{ role.get_time }}', '{{ role.pay_time }}', '{{ role.last_time }}', '{{ role.status }}', '{{ role.return_money_time }}', '{{ role.is_talk }}')">编辑</a>
-                            <a onclick="delete_role({{ role.order_id }},'{{ role.get_time }}', '{{ role.pay_time }}', '{{ role.last_time }}', '{{ role.status }}', '{{ role.return_money_time }}', '{{ role.is_talk }}')" class="btn btn-danger btn-sm">删除</a>
+                               onclick="edit({{ role.v_id }}, '{{ role.name }}', '{{ role.price }}','{{ role.v_desc }}','{{ role.v_pic }}', '{{ role.travel_way }}', '{{ role.diamonds }}')">编辑</a>
+                            <a onclick="delete_role({{ role.v_id }}, '{{ role.name }}', '{{ role.price }}','{{ role.v_desc }}','{{ role.v_pic }}', '{{ role.travel_way }}', '{{ role.diamonds }}')" class="btn btn-danger btn-sm">删除</a>
                         </td>
                     </tr>
 
@@ -66,24 +64,28 @@
                     <div class="modal-body">
                         <ul>
                             <li>
-                                <label><span>用户ID ：</span></label>
-                                <input type="text" name="ud_id"/>
+                                <label><span>景点名 ：</span></label>
+                                <input type="text" name="name"/>
                             </li>
                             <li>
-                                <label><span>名称 ：</span></label>
-                                <input type="text" name="ticket_name"/>
+                                <label><span>价格 ：</span></label>
+                                <input type="text" name="price"/>
                             </li>
                             <li>
-                                <label><span>面额 ：</span></label>
-                                <input type="text" name="ticket_account"/>
+                                <label><span>描述 ：</span></label>
+                                <input type="text" name="v_desc"/>
                             </li>
                             <li>
-                                <label><span>功能 ：</span></label>
-                                <input type="text" name="ticket_desc"/>
+                                <label><span>图片 ：</span></label>
+                                <input type="text" name="v_pic"/>
                             </li>
                             <li>
-                                <label><span>状态 ：</span></label>
-                                <input type="text" name="is_use"/>
+                                <label><span>旅行方式 ：</span></label>
+                                <input type="text" name="travel_way"/>
+                            </li>
+                            <li>
+                                <label><span>钻石数 ：</span></label>
+                                <input type="text" name="diamonds"/>
                             </li>
                         </ul>
                     </div>
@@ -109,36 +111,32 @@
                     <div class="modal-body">
                         <ul>
                             <li>
-                                <label><span>订单ID ：</span></label>
-                                <input id="edit_id" type="text" name="order_id"/>
+                                <label><span>景点ID ：</span></label>
+                                <input id="edit_id" type="text" name="id"/>
                             </li>
                             <li>
-                                <label><span>创建时间 ：</span></label>
-                                <input id="edit_get" type="datetime-local" name="get_time"/>
+                                <label><span>景点名 ：</span></label>
+                                <input id="edit_name" type="text" name="name"/>
                             </li>
                             <li>
-                                <label><span>支付时间 ：</span></label>
-                                <input id="edit_pay" type="datetime-local" name="pay_time"/>
+                                <label><span>价格 ：</span></label>
+                                <input id="edit_price" type="text" name="price"/>
                             </li>
                             <li>
-                                <label><span>完成时间 ：</span></label>
-                                <input id="edit_last" type="datetime-local" name="last_time"/>
+                                <label><span>描述 ：</span></label>
+                                <input id="edit_v_desc" type="text" name="v_desc"/>
                             </li>
                             <li>
-                                <label><span>状态 ：</span></label>
-                                <input id="edit_status" type="text" name="status"/>
+                                <label><span>图片 ：</span></label>
+                                <input id="edit_v_pic" type="text" name="v_pic"/>
                             </li>
                             <li>
-                                <label><span>申请退款时间 ：</span></label>
-                                <input id="edit_need" type="datetime-local" name="no_need"/>
+                                <label><span>旅行方式 ：</span></label>
+                                <input id="edit_travel" type="text" name="travel_way"/>
                             </li>
                             <li>
-                                <label><span>退款时间 ：</span></label>
-                                <input id="edit_return" type="datetime-local" name="return_money_time"/>
-                            </li>
-                            <li>
-                                <label><span>是否评论 ：</span></label>
-                                <input id="edit_talk" type="text" name="is_talk"/>
+                                <label><span>钻石数 ：</span></label>
+                                <input id="edit_diamonds" type="text" name="diamonds"/>
                             </li>
                         </ul>
                     </div>
@@ -173,28 +171,26 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block js %}
     <script>
-        function edit(order_id, get_time, pay_time, last_time, status, no_need, return_money_time, is_talk) {
-            $('#edit_id').val(order_id);
-            $('#edit_get').val(get_time);
-            $('#edit_pay').val(pay_time);
-            $('#edit_last').val(last_time);
-            $('#edit_status').val(status);
-            $('#edit_need').val(no_need);
-            $('#edit_return').val(return_money_time);
-            $('#edit_talk').val(is_talk);
+        function edit(v_id, name, price, v_desc, v_pic, travel_way, diamonds) {
+            $('#edit_id').val(v_id);
+            $('#edit_name').val(name);
+            $('#edit_price').val(price);
+            $('#edit_v_desc').val(v_desc);
+            $('#edit_v_pic').val(v_pic);
+            $('#edit_travel').val(travel_way);
+            $('#edit_diamonds').val(diamonds);
 
             $('#edit').modal('show');
         }
         $('.modal-open').find('.modal-backdrop').remove();
         var role_id = 0;
-        function delete_role(order_id,  ){
-            role_id = order_id;
-            $('#msg').html('是否删除 '+ order_id +" ?");
+        function delete_role(v_id, name) {
+            role_id = v_id;
+            $('#msg').html('是否删除 '+ name+" ?");
             $('#info').modal('toggle');
         }
 

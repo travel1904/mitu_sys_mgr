@@ -1,23 +1,168 @@
 {% extends 'basic/base.html' %}
+{% block content_nav_home %}系统管理{% endblock %}
+{% block content_nav %}
+    <li>角色管理</li>
+{% endblock %}
 
-{% block nav_path %}
-    <li><span>系统管理</span></li>
-    <li><span>用户角色</span></li>
-{% endblock %}
 {% block content %}
-    <div>
-    <table>
-        <thead>
-            <th>ID</th>
-            <th>Name</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>disen</td>
-            </tr>
-        </tbody>
-    </table>
+    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>
+    <div class="froms" style="width: 100%;
+        height: 80%;
+        {#position:relative!important;#}
+        background-color: rgba(255,255,255,0.3);
+        padding: 10px 10px;
+        z-index:0">
+        <div style="z-index: 1;box-sizing: border-box">
+            <table class="table table-bordered table-striped text-center bg-info" width="600" style="box-sizing: border-box;overflow: hidden;">
+                <thead >
+                <tr class="info">
+                    <th class="text-center" style="">id</th>
+                    <th class="text-center">name</th>
+                    <th class="text-center">code</th>
+                    <th class="text-center" width="200px">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for role in roles %}
+                    <tr>
+                        <td>{{ role.id }}</td>
+                        <td>{{ role.name }}</td>
+                        <td>{{ role.code }}</td>
+                        <td>
+                            <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+                               onclick="edit({{ role.id }}, '{{ role.name }}', '{{ role.code }}')">编辑</a>
+                            <a onclick="delete_role({{ role.id }}, '{{ role.name }}')" class="btn btn-danger btn-sm">删除</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+           </table>
+        </div>
+
     </div>
-   <table></table>
+
+
+    <!--添加-->
+    <div class="modal fade" id="add1" tabindex="-1" role="dialog" aria-labelledby="add11">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add11">添加</h4>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <ul>
+                            <li>
+                                <label><span>角色名 ：</span></label>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <label><span>编码 ：</span></label>
+                                <input type="text" name="code"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer" style="z-index:9999;">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary btn-sm">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑 -->
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="add11" data-backdrop="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add11">编辑</h4>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <ul>
+                            <li>
+                                <label><span>角色ID ：</span></label>
+                                <input id="edit_id" type="text" name="role_id"/>
+                            </li>
+                            <li>
+                                <label><span>角色名 ：</span></label>
+                                <input id="edit_name" type="text" name="name"/>
+                            </li>
+                            <li>
+                                <label><span>编码 ：</span></label>
+                                <input id="edit_code" type="text" name="code"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer" style="z-index:9999;">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary btn-sm">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示 -->
+    <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="add11" data-dropback="false">
+        <div class="modal-dialog" role="document" style="z-index: 9999">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add11">提示信息</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <h4 id="msg"></h4>
+                </div>
+                <div class="modal-footer" style="z-index:9999;">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                    <button onclick="delete_ajax()" class="btn btn-warning btn-sm">确定</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+{% block js %}
+    <script>
+        function edit(id, name, code) {
+            $('#edit_id').val(id);
+            $('#edit_name').val(name);
+            $('#edit_code').val(code);
+
+            $('#edit').modal('show');
+        }
+        $('.modal-open').find('.modal-backdrop').remove();
+        var role_id = 0;
+        function delete_role(roleid, role_name) {
+            role_id = roleid;
+            $('#msg').html('是否删除 '+ role_name+" ?");
+            $('#info').modal('toggle');
+        }
+
+        function delete_ajax() {
+            url = window.location.href + "?id=" + role_id;
+            fetch(url, {
+                method: 'DELETE'
+            }).then(resp => resp.json()).then(data => {
+                alert(data.msg);
+                if (data.status == 0) {
+                    // 刷新当前页面
+                    open(window.location.href, target = '_self');
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+

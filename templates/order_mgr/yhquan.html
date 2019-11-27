@@ -1,1 +1,202 @@
 {% extends 'basic/base.html' %}
+{% block content_nav_home %}订单管理{% endblock %}
+{% block content_nav %}
+    <li>优惠券管理</li>
+{% endblock %}
+
+{% block content %}
+    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>
+    <div class="froms" style="width: 100%;
+        height: 80%;
+        {#position:relative!important;#}
+        background-color: rgba(255,255,255,0.3);
+        padding: 10px 10px;
+        z-index:0">
+        <div style="z-index: 1;box-sizing: border-box">
+            <table class="table table-bordered table-striped text-center bg-info" width="600" style="box-sizing: border-box;overflow: hidden;">
+                <thead >
+                <tr class="info">
+                    <th class="text-center" style="">优惠券ID</th>
+{#                    <th class="text-center">用户ID</th>#}
+                    <th class="text-center">优惠券名</th>
+                    <th class="text-center">面额</th>
+                    <th class="text-center">功能描述</th>
+                    <th class="text-center">是否失效</th>
+                    <th class="text-center" width="200px">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for role in roles %}
+                    <tr>
+                        <td>{{ role.ticket_id }}</td>
+{#                        <td>{{ role.ud_id }}</td>#}
+                        <td>{{ role.ticket_name }}</td>
+                        <td>{{ role.ticket_account }}</td>
+                        <td>{{ role.ticket_desc }}</td>
+                        <td>{{ role.is_use }}</td>
+                        <td>
+                            <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+                               onclick="edit({{ role.ticket_id }},'{{ role.ticket_name }}', '{{ role.ticket_account }}', '{{ role.ticket_desc }}', '{{ role.is_use }}')">编辑</a>
+                            <a onclick="delete_role({{ role.ticket_id }},'{{ role.ticket_name }}', '{{ role.ticket_account }}', '{{ role.ticket_desc }}', '{{ role.is_use }}')" class="btn btn-danger btn-sm">删除</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+           </table>
+        </div>
+
+    </div>
+
+
+    <!--添加-->
+    <div class="modal fade" id="add1" tabindex="-1" role="dialog" aria-labelledby="add11">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add11">添加</h4>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <ul>
+{#                            <li>#}
+{#                                <label><span>用户ID ：</span></label>#}
+{#                                <input type="text" name="ud_id"/>#}
+{#                            </li>#}
+                            <li>
+                                <label><span>名称 ：</span></label>
+                                <input type="text" name="ticket_name"/>
+                            </li>
+                            <li>
+                                <label><span>面额 ：</span></label>
+                                <input type="text" name="ticket_account"/>
+                            </li>
+                            <li>
+                                <label><span>功能 ：</span></label>
+                                <input type="text" name="ticket_desc"/>
+                            </li>
+                            <li>
+                                <label><span>状态 ：</span></label>
+                                <input type="text" name="is_use"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer" style="z-index:9999;">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary btn-sm">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑 -->
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="add11" data-backdrop="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add11">编辑</h4>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <ul>
+                            <li>
+                                <label><span>优惠券ID ：</span></label>
+                                <input id="edit_id" type="text" name="ticket_id"/>
+                            </li>
+{#                            <li>#}
+{#                                <label><span>用户ID ：</span></label>#}
+{#                                <input id="edit_ud_id" type="text" name="ud_id"/>#}
+{#                            </li>#}
+                            <li>
+                                <label><span>名称 ：</span></label>
+                                <input id="edit_name" type="text" name="ticket_name"/>
+                            </li>
+                            <li>
+                                <label><span>面额 ：</span></label>
+                                <input id="edit_account" type="text" name="ticket_account"/>
+                            </li>
+                            <li>
+                                <label><span>功能 ：</span></label>
+                                <input id="edit_desc" type="text" name="ticket_desc"/>
+                            </li>
+                            <li>
+                                <label><span>状态 ：</span></label>
+                                <input id="edit_use" type="text" name="is_use"/>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer" style="z-index:9999;">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary btn-sm">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示 -->
+    <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="add11" data-dropback="false">
+        <div class="modal-dialog" role="document" style="z-index: 9999">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="add11">提示信息</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <h4 id="msg"></h4>
+                </div>
+                <div class="modal-footer" style="z-index:9999;">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
+                    <button onclick="delete_ajax()" class="btn btn-warning btn-sm">确定</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        function edit(ticket_id, ticket_name, ticket_account, ticket_desc, is_use) {
+            $('#edit_id').val(ticket_id);
+            {#$('#edit_ud_id').val(ud_id);#}
+            $('#edit_name').val(ticket_name);
+            $('#edit_account').val(ticket_account);
+            $('#edit_desc').val(ticket_desc);
+            $('#edit_use').val(is_use);
+
+            $('#edit').modal('show');
+        }
+        $('.modal-open').find('.modal-backdrop').remove();
+        var role_id = 0;
+        function delete_role(ticket_id, ticket_name ){
+            role_id = ticket_id;
+            $('#msg').html('是否删除 '+ ticket_name +" ?");
+            $('#info').modal('toggle');
+        }
+
+        function delete_ajax() {
+            url = window.location.href + "?id=" + role_id;
+            fetch(url, {
+                method: 'DELETE'
+            }).then(resp => resp.json()).then(data => {
+                alert(data.msg);
+                if (data.status == 0) {
+                    // 刷新当前页面
+                    open(window.location.href, target = '_self');
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+

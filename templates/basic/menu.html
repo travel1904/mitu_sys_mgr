@@ -7,7 +7,8 @@
                 <i class="icon-home icon-large"></i> 主页
             </a>
         </div>
-        <div class="panel panel-default menu-first">
+        {% if request.session.login_user.role_code == 'admin' %}
+            <div class="panel panel-default menu-first">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
                aria-controls="collapseOne">
                 <i class="icon-user-md icon-large"></i> 系统管理</a>
@@ -17,11 +18,13 @@
                 <ul class="nav nav-list menu-second">
                     <li><a href="/role/"><i class="icon-user"></i> 角色管理</a></li>
                     <li><a href="/user/"><i class="icon-edit"></i> 用户管理</a></li>
-                    <li><a href="/authority/"><i class="icon-trash"></i>权限管理</a></li>
-                    <li><a href="/caidan/"><i class="icon-list"></i> 菜单管理</a></li>
+                    <li><a href="/authority/"><i class="icon-trash"></i>朋友圈管理</a></li>
+                    <li><a href="/caidan/"><i class="icon-list"></i> 旅客管理</a></li>
+                    <li><a href="/xttz/"><i class="icon-list"></i> 系统通知</a></li>
                 </ul>
             </div>
-        </div>
+            </div>
+        {% endif %}
         <div class="panel panel-default menu-first">
             <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
                aria-expanded="false" aria-controls="collapseTwo">
@@ -31,23 +34,22 @@
                 <ul class="nav nav-list menu-second">
                     <li><a href="/info/"><i class="icon-user"></i> 景点信息</a></li>
                     <li><a href="/pl/"><i class="icon-edit"></i> 景点评论</a></li>
-                    <li><a href="/tj/"><i class="icon-trash"></i> 推荐管理</a></li>
-                    <li><a href="/zsfj/"><i class="icon-list"></i> 周三放价</a></li>
+{#                    <li><a href="/tj/"><i class="icon-trash"></i> 推荐管理</a></li>#}
+{#                    <li><a href="/zsfj/"><i class="icon-list"></i> 周三放价</a></li>#}
                 </ul>
             </div>
         </div>
         <div class="panel panel-default menu-first">
             <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
                aria-expanded="false" aria-controls="collapseThree">
-                <i class="icon-camera icon-large"></i> 用户管理</a>
+                <i class="icon-camera icon-large"></i> 文章管理</a>
             </a>
 
             <div id="collapseThree" class="panel-collapse collapse">
                 <ul class="nav nav-list menu-second">
                     <li><a href="/wzgl/"><i class="icon-user"></i> 文章管理</a></li>
-                    <li><a href="/wzpl/"><i class="icon-edit"></i> 文章评论</a></li>
-                    <li><a href="/jptj/"><i class="icon-trash"></i> 精品推荐</a></li>
-                    <li><a href="/jygl/"><i class="icon-list"></i> 禁言管理</a></li>
+                    <li><a href="/lunbt/"><i class="icon-edit"></i> 轮播图管理</a></li>
+
                 </ul>
             </div>
         </div>
@@ -61,8 +63,8 @@
             <div id="collapseFour" class="panel-collapse collapse">
                 <ul class="nav nav-list menu-second">
                     <li><a href="/user_count/"><i class="icon-user"></i> 用户统计</a></li>
-                    <li><a href="/order_count/"><i class="icon-edit"></i> 景点统计</a></li>
-                    <li><a href="/jingdian_count/"><i class="icon-trash"></i> 订单统计</a></li>
+                    <li><a href="/view_count/"><i class="icon-edit"></i> 旅客统计</a></li>
+                    <li><a href="/order_count/"><i class="icon-trash"></i> 订单统计</a></li>
                 </ul>
             </div>
         </div>
@@ -75,7 +77,7 @@
 
             <div id="collapseFive" class="panel-collapse collapse">
                 <ul class="nav nav-list menu-second">
-                    <li><a href="/order_info/"><i class="icon-user"></i> 订单信息</a></li>
+                    <li><a href="/order/"><i class="icon-user"></i> 订单信息</a></li>
                     <li><a href="/yhquan/"><i class="icon-edit"></i> 优惠券</a></li>
                     <li><a href="/jifen/"><i class="icon-trash"></i> 积分管理</a></li>
                 </ul>
