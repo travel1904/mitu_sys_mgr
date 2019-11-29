@@ -75,11 +75,12 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mitu',
-        'HOST': '139.9.172.8',
+        'NAME': 'mitu1',
+        'HOST': '39.105.52.171',
         'PORT': 3306,
         'USER': 'root',
-        'PASSWORD': 'root'
+        'PASSWORD': '123456',
+        'CHARSET': 'utf8'
     }
 }
 
@@ -120,7 +121,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 CACHES = {
     'redis': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://139.9.172.8:6377/0'
+        'LOCATION': 'redis://117.78.9.95:6379/0'
     },
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',

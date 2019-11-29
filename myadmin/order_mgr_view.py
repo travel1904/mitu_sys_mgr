@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from myadmin.models import *
+from utils.owner import owner_page
 
 
 class JifenView(View):
@@ -58,46 +59,49 @@ class JifenView(View):
 class YhquanView(View):
     def get(self, request):
         if request.GET.get('id', ''):
-            role = Ticket.objects.get(pk=request.GET.get('id'))
+            role = SysTicket.objects.get(pk=request.GET.get('id'))
             return JsonResponse({
-                'id': role.ticket_id,
+                'id': role.sys_ticket_id,
                 # 'ud_id': role.ud_id,
-                'name': role.ticket_name,
-                'account': role.ticket_account,
-                'desc': role.ticket_desc,
-                'use': role.is_use
+                'name': role.st_name,
+                'account': role.st_money,
+                'desc': role.st_ticket_desc,
+                'use': role.is_use,
+                'time': role.create_time
             })
 
-        roles = Ticket.objects.all()
+        roles = SysTicket.objects.all()
         return render(request, 'order_mgr/yhquan.html', locals())
 
     def post(self, request):
         print(request.POST)
         id = request.POST.get('ticket_id', None)  # 注意： form表单页面不建议使用id 字段名
         # ud_id = request.POST.get('ud_id')
-        ticket_name = request.POST.get('ticket_name')
-        ticket_account = request.POST.get('tick_account')
-        ticket_desc = request.POST.get('ticket_desc')
+        st_name = request.POST.get('st_name')
+        st_money = request.POST.get('st_money')
+        st_ticket_desc = request.POST.get('st_ticket_desc')
         is_use = request.POST.get('is_use')
+        create_time = request.POST.get('create_time')
         # 验证是否为空(建议:页面上验证是否为空)
 
         if id:
             # 更新
-            role = Ticket.objects.get(pk=id)
+            role = SysTicket.objects.get(pk=id)
             # role.ud_id = ud_id
-            role.ticket_name = ticket_name
-            role.ticket_account = ticket_account
-            role.ticket_desc = ticket_desc
+            role.st_name = st_name
+            role.st_money = st_money
+            role.st_ticket_desc = st_ticket_desc
             role.is_use = is_use
+            role.create_time = create_time
             role.save()
         else:
-           Ticket.objects.create(ticket_name=ticket_name, ticket_account=ticket_account, ticket_desc=ticket_desc, is_use=is_use)
+            SysTicket.objects.create(st_name=st_name, st_money=st_money, st_ticket_desc=st_ticket_desc, is_use=is_use, create_time=create_time)
 
         return redirect('/yhquan/')
 
     def delete(self, request):
         role_id = request.GET.get('id')
-        role = Ticket.objects.get(pk=role_id)
+        role = SysTicket.objects.get(pk=role_id)
         role.delete()
 
         return JsonResponse({
@@ -121,6 +125,9 @@ class OrderInfoiew(View):
             })
 
         roles = OrderTable.objects.all()
+        id = request.session.get('id')
+        # views = Views.objects.all()
+        roles1, allPage, curPage, count = owner_page(request, roles)
         return render(request, 'order_mgr/order_info.html', locals())
 
     def post(self, request):

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>
+{#    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>#}
     <div class="froms" style="width: 100%;
         height: 80%;
         {#position:relative!important;#}
@@ -22,22 +22,25 @@
                     <th class="text-center">面额</th>
                     <th class="text-center">功能描述</th>
                     <th class="text-center">是否失效</th>
+                    <th class="text-center">添加时间</th>
                     <th class="text-center" width="200px">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for role in roles %}
                     <tr>
-                        <td>{{ role.ticket_id }}</td>
+                        <td>{{ role.sys_ticket_id }}</td>
 {#                        <td>{{ role.ud_id }}</td>#}
-                        <td>{{ role.ticket_name }}</td>
-                        <td>{{ role.ticket_account }}</td>
-                        <td>{{ role.ticket_desc }}</td>
+                        <td>{{ role.st_name }}</td>
+                        <td>{{ role.st_money }}</td>
+                        <td>{{ role.st_ticket_desc }}</td>
                         <td>{{ role.is_use }}</td>
+                        <td>{{ role.create_time }}</td>
                         <td>
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1">添加</a>
                             <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
-                               onclick="edit({{ role.ticket_id }},'{{ role.ticket_name }}', '{{ role.ticket_account }}', '{{ role.ticket_desc }}', '{{ role.is_use }}')">编辑</a>
-                            <a onclick="delete_role({{ role.ticket_id }},'{{ role.ticket_name }}', '{{ role.ticket_account }}', '{{ role.ticket_desc }}', '{{ role.is_use }}')" class="btn btn-danger btn-sm">删除</a>
+                               onclick="edit({{ role.sys_ticket_id }},'{{ role.st_name }}', '{{ role.st_money }}', '{{ role.st_ticket_desc }}', '{{ role.is_use }}', '{{ role.create_time }}')">编辑</a>
+{#                            <a onclick="delete_role({{ role.sys_ticket_id }},'{{ role.st_name }}', '{{ role.st_money }}', '{{ role.st_ticket_desc }}', '{{ role.is_use }}', '{{ role.create_time }}')" class="btn btn-danger btn-sm">删除</a>#}
                         </td>
                     </tr>
 
@@ -67,19 +70,23 @@
 {#                            </li>#}
                             <li>
                                 <label><span>名称 ：</span></label>
-                                <input type="text" name="ticket_name"/>
+                                <input type="text" name="st_name"/>
                             </li>
                             <li>
                                 <label><span>面额 ：</span></label>
-                                <input type="text" name="ticket_account"/>
+                                <input type="text" name="st_money"/>
                             </li>
                             <li>
                                 <label><span>功能 ：</span></label>
-                                <input type="text" name="ticket_desc"/>
+                                <input type="text" name="st_ticket_desc"/>
                             </li>
                             <li>
                                 <label><span>状态 ：</span></label>
                                 <input type="text" name="is_use"/>
+                            </li>
+                            <li>
+                                <label><span>创建时间 ：</span></label>
+                                <input type="text" name="create_time"/>
                             </li>
                         </ul>
                     </div>
@@ -106,7 +113,7 @@
                         <ul>
                             <li>
                                 <label><span>优惠券ID ：</span></label>
-                                <input id="edit_id" type="text" name="ticket_id"/>
+                                <input id="edit_id" type="text" name="sys_ticket_id"/>
                             </li>
 {#                            <li>#}
 {#                                <label><span>用户ID ：</span></label>#}
@@ -114,19 +121,23 @@
 {#                            </li>#}
                             <li>
                                 <label><span>名称 ：</span></label>
-                                <input id="edit_name" type="text" name="ticket_name"/>
+                                <input id="edit_name" type="text" name="st_name"/>
                             </li>
                             <li>
                                 <label><span>面额 ：</span></label>
-                                <input id="edit_account" type="text" name="ticket_account"/>
+                                <input id="edit_account" type="text" name="st_money"/>
                             </li>
                             <li>
                                 <label><span>功能 ：</span></label>
-                                <input id="edit_desc" type="text" name="ticket_desc"/>
+                                <input id="edit_desc" type="text" name="st_ticket_desc"/>
                             </li>
                             <li>
                                 <label><span>状态 ：</span></label>
                                 <input id="edit_use" type="text" name="is_use"/>
+                            </li>
+                            <li>
+                                <label><span>创建时间 ：</span></label>
+                                <input id="edit_time" type="datetime-local" name="create_time"/>
                             </li>
                         </ul>
                     </div>
@@ -166,21 +177,22 @@
 
 {% block js %}
     <script>
-        function edit(ticket_id, ticket_name, ticket_account, ticket_desc, is_use) {
-            $('#edit_id').val(ticket_id);
+        function edit(sys_ticket_id, st_name, st_money, st_ticket_desc, is_use, create_time) {
+            $('#edit_id').val(sys_ticket_id);
             {#$('#edit_ud_id').val(ud_id);#}
-            $('#edit_name').val(ticket_name);
-            $('#edit_account').val(ticket_account);
-            $('#edit_desc').val(ticket_desc);
+            $('#edit_name').val(st_name);
+            $('#edit_account').val(st_money);
+            $('#edit_desc').val(st_ticket_desc);
             $('#edit_use').val(is_use);
+            $('#edit_time').val(create_time);
 
             $('#edit').modal('show');
         }
         $('.modal-open').find('.modal-backdrop').remove();
         var role_id = 0;
-        function delete_role(ticket_id, ticket_name ){
-            role_id = ticket_id;
-            $('#msg').html('是否删除 '+ ticket_name +" ?");
+        function delete_role(sys_ticket_id, st_name ){
+            role_id = sys_ticket_id;
+            $('#msg').html('是否删除 '+ st_name +" ?");
             $('#info').modal('toggle');
         }
 

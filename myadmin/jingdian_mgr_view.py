@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from myadmin.models import *
+from utils.owner import owner_page
 
 
 class InfoView(View):
@@ -19,7 +20,15 @@ class InfoView(View):
             })
 
         roles = Views.objects.all()
+        id = request.session.get('id')
+        # views = Views.objects.all()
+        roles1, allPage, curPage, count = owner_page(request, roles)
+
         return render(request, 'jingdian_mgr/jingdian.html', locals())
+
+    # def get_all_goods(self, request):
+    #
+    #     return render(request, "jingdian_mgr/jingdian.html", locals())
 
     def post(self, request):
         print(request.POST)
@@ -49,6 +58,7 @@ class InfoView(View):
 
     def delete(self, request):
         role_id = request.GET.get('id')
+        # print(role_id)
         role = Views.objects.get(pk=role_id)
         role.delete()
 
@@ -56,6 +66,8 @@ class InfoView(View):
             'status': 0,
             'msg': '删除成功!'
         })
+
+
 
 
 class PlView(View):

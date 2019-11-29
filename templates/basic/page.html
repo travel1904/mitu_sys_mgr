@@ -1,0 +1,23 @@
+<div id="pages" class="text-left">
+    <nav>
+        <ul class="pagination">
+            <li class="step-links">
+                {% ifnotequal curPage 1 %}
+                <a href="?cur={{ curPage }}&all={{ allPage }}&action=previous">
+                    上一页
+                </a>
+                {% endifnotequal %}
+
+                <span class="current">第{{ curPage }}&nbsp;&nbsp;/&nbsp;&nbsp;{{ allPage }}页</span>
+
+                {% ifnotequal curPage allPage %}
+                <a href="?cur={{ curPage }}&&all={{ allPage }}&&action=next">
+                    下一页
+                </a>
+                {% endifnotequal %}
+            </li>
+            <li><span class="[object Object]"
+                      style="color:black; sex:black; border:1px solid #ddd;">共{{ count }}条记录</span></li>
+        </ul>
+    </nav>
+</div>

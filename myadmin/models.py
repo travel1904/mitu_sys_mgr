@@ -1,11 +1,18 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
 class Article(models.Model):
     article_id = models.AutoField(primary_key=True)
     ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
-    a_title = models.CharField(max_length=10)
-    a_image = models.CharField(max_length=30, blank=True, null=True)
+    a_title = models.CharField(max_length=100)
+    a_image = models.CharField(max_length=255, blank=True, null=True)
     view_num = models.IntegerField(blank=True, null=True)
     a_talk = models.IntegerField(blank=True, null=True)
     good_num = models.IntegerField(blank=True, null=True)
@@ -24,6 +31,17 @@ class ArticleContent(models.Model):
     class Meta:
         managed = False
         db_table = 'article_content'
+
+
+class CityName(models.Model):
+    city_id = models.AutoField(primary_key=True)
+    vp = models.ForeignKey('ViewPlace', models.DO_NOTHING, blank=True, null=True)
+    city_name = models.CharField(max_length=50, blank=True, null=True)
+    city_img = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'city_name'
 
 
 class EndProductRecommend(models.Model):
@@ -68,27 +86,6 @@ class LevelChange(models.Model):
         db_table = 'level_change'
 
 
-class Manager(models.Model):
-    manager_id = models.AutoField(primary_key=True)
-    m_account = models.CharField(max_length=20)
-    m_password = models.CharField(max_length=100)
-    m_rank = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'manager'
-
-
-class ManagerDetail(models.Model):
-    manager_d_id = models.AutoField(primary_key=True)
-    manager = models.ForeignKey(Manager, models.DO_NOTHING, blank=True, null=True)
-    login = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'manager_detail'
-
-
 class MemberLevelDesc(models.Model):
     mem_l_id = models.AutoField(primary_key=True)
     ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
@@ -99,9 +96,23 @@ class MemberLevelDesc(models.Model):
         db_table = 'member_level_desc'
 
 
+class OrderDiscuss(models.Model):
+    od_id = models.AutoField(primary_key=True)
+    ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
+    order = models.ForeignKey('OrderTable', models.DO_NOTHING, blank=True, null=True)
+    stars = models.IntegerField(blank=True, null=True)
+    content = models.CharField(max_length=255, blank=True, null=True)
+    is_public = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'order_discuss'
+
+
 class OrderTable(models.Model):
     order_id = models.AutoField(primary_key=True)
     v = models.ForeignKey('Views', models.DO_NOTHING, blank=True, null=True)
+    ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
     get_time = models.DateTimeField(blank=True, null=True)
     pay_time = models.DateTimeField(blank=True, null=True)
     last_time = models.DateTimeField(blank=True, null=True)
@@ -109,6 +120,10 @@ class OrderTable(models.Model):
     no_need = models.DateTimeField(blank=True, null=True)
     return_money_time = models.DateTimeField(blank=True, null=True)
     is_talk = models.IntegerField(blank=True, null=True)
+    order_name = models.CharField(max_length=50, blank=True, null=True)
+    price = models.FloatField(blank=True, null=True)
+    start_time = models.DateField(blank=True, null=True)
+    order_type = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -130,7 +145,7 @@ class ProductRecommend(models.Model):
 class Record(models.Model):
     record_id = models.AutoField(primary_key=True)
     ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
-    corder_id = models.IntegerField(blank=True, null=True)
+    record_name = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -170,6 +185,21 @@ class SysRole(models.Model):
         db_table = 'sys_role'
 
 
+class SysTicket(models.Model):
+    sys_ticket_id = models.AutoField(primary_key=True)
+    st_name = models.CharField(max_length=20)
+    st_money = models.FloatField()
+    st_ticket_desc = models.CharField(max_length=200, blank=True, null=True)
+    is_use = models.IntegerField(blank=True, null=True)
+    st_tiaojian = models.CharField(max_length=20, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    create_time = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_ticket'
+
+
 class SysUser(models.Model):
     name = models.CharField(unique=True, max_length=50)
     auth_string = models.CharField(max_length=100)
@@ -198,25 +228,13 @@ class SysUserRole(models.Model):
         db_table = 'sys_user_role'
 
 
-class Ticket(models.Model):
-    ticket_id = models.AutoField(primary_key=True)
-    ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
-    ticket_name = models.CharField(max_length=20)
-    ticket_account = models.FloatField()
-    ticket_desc = models.CharField(max_length=50, blank=True, null=True)
-    is_use = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'ticket'
-
-
 class TravelCircle(models.Model):
     tr_id = models.AutoField(primary_key=True)
     vp = models.ForeignKey('Views', models.DO_NOTHING, blank=True, null=True)
     head_picture = models.CharField(max_length=200, blank=True, null=True)
     nickname = models.CharField(max_length=20, blank=True, null=True)
     pic_dis = models.CharField(max_length=200, blank=True, null=True)
+    sign = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -235,13 +253,15 @@ class TravelLife(models.Model):
 
 
 class TravelerInfo(models.Model):
-    travel_id = models.IntegerField(primary_key=True)
-    order = models.ForeignKey(OrderTable, models.DO_NOTHING, blank=True, null=True)
-    name = models.CharField(max_length=6)
-    gender = models.IntegerField()
-    id_card = models.IntegerField()
-    phone_num = models.IntegerField()
+    travel_id = models.AutoField(primary_key=True)
+    ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
+    name = models.CharField(max_length=20, blank=True, null=True)
+    gender = models.IntegerField(blank=True, null=True)
+    id_card = models.IntegerField(blank=True, null=True)
+    phone_num = models.CharField(max_length=20, blank=True, null=True)
     go_date = models.DateTimeField(blank=True, null=True)
+    p_type = models.IntegerField(blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -251,8 +271,8 @@ class TravelerInfo(models.Model):
 class UserAccount(models.Model):
     user_id = models.AutoField(primary_key=True)
     ud = models.ForeignKey('UserDetail', models.DO_NOTHING, blank=True, null=True)
-    user_name = models.CharField(max_length=10)
-    user_password = models.CharField(max_length=100)
+    user_name = models.CharField(max_length=20, blank=True, null=True)
+    user_password = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -261,13 +281,12 @@ class UserAccount(models.Model):
 
 class UserDetail(models.Model):
     ud_id = models.AutoField(primary_key=True)
-    order = models.ForeignKey(OrderTable, models.DO_NOTHING, blank=True, null=True)
-    nick_name = models.CharField(max_length=10, blank=True, null=True)
-    real_name = models.CharField(max_length=10)
+    nick_name = models.CharField(max_length=25, blank=True, null=True)
+    real_name = models.CharField(max_length=20, blank=True, null=True)
     ud_gender = models.IntegerField(blank=True, null=True)
     ud_email = models.CharField(max_length=50, blank=True, null=True)
-    ud_img = models.CharField(max_length=200, blank=True, null=True)
-    ud_job = models.CharField(max_length=20)
+    ud_img = models.TextField(blank=True, null=True)
+    ud_job = models.CharField(max_length=20, blank=True, null=True)
     ud_level = models.CharField(max_length=200, blank=True, null=True)
     ud_info = models.CharField(max_length=200, blank=True, null=True)
     adress = models.CharField(max_length=50, blank=True, null=True)
@@ -277,14 +296,29 @@ class UserDetail(models.Model):
         db_table = 'user_detail'
 
 
+class UserTicket(models.Model):
+    user_ticket_id = models.AutoField(primary_key=True)
+    ud = models.ForeignKey(UserDetail, models.DO_NOTHING, blank=True, null=True)
+    sys_ticket = models.ForeignKey(SysTicket, models.DO_NOTHING, blank=True, null=True)
+    ut_desc = models.CharField(max_length=200, blank=True, null=True)
+    is_use = models.IntegerField(blank=True, null=True)
+    ut_tiaojian = models.CharField(max_length=50, blank=True, null=True)
+    ut_money = models.FloatField(blank=True, null=True)
+    ut_name = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_ticket'
+
+
 class UserWallet(models.Model):
     wallet_id = models.AutoField(primary_key=True)
     ud = models.ForeignKey(UserDetail, models.DO_NOTHING, blank=True, null=True)
-    w_acount = models.FloatField()
-    rest_money = models.FloatField()
-    recharge = models.FloatField()
-    is_have = models.IntegerField()
-    is_display = models.IntegerField()
+    w_acount = models.FloatField(blank=True, null=True)
+    rest_money = models.FloatField(blank=True, null=True)
+    recharge = models.FloatField(blank=True, null=True)
+    is_have = models.IntegerField(blank=True, null=True)
+    is_display = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -296,6 +330,7 @@ class ViewPlace(models.Model):
     city_name = models.CharField(max_length=10)
     province_name = models.CharField(max_length=10)
     district_name = models.CharField(max_length=10)
+    city_img = models.CharField(max_length=200, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -304,10 +339,10 @@ class ViewPlace(models.Model):
 
 class Views(models.Model):
     v_id = models.AutoField(primary_key=True)
-    vp = models.ForeignKey(ViewPlace, models.DO_NOTHING, blank=True, null=True)
+    city = models.ForeignKey(CityName, models.DO_NOTHING, blank=True, null=True)
     name = models.CharField(max_length=20, blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
-    v_desc = models.CharField(max_length=50, blank=True, null=True)
+    v_desc = models.CharField(max_length=255, blank=True, null=True)
     v_pic = models.CharField(max_length=200, blank=True, null=True)
     v_route = models.CharField(max_length=500, blank=True, null=True)
     is_youhui = models.IntegerField(blank=True, null=True)
@@ -315,10 +350,11 @@ class Views(models.Model):
     travel_way = models.CharField(max_length=10, blank=True, null=True)
     diamonds = models.CharField(max_length=10, blank=True, null=True)
     create_time = models.DateTimeField(blank=True, null=True)
-    start_time = models.DateTimeField(blank=True, null=True)
+    start_time = models.DateField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
     count_num = models.IntegerField(blank=True, null=True)
     cost_days = models.IntegerField(blank=True, null=True)
+    reason = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

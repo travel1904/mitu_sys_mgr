@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from myadmin.models import *
+from utils.owner import owner_page
 
 
 class WzglView(View):
@@ -18,6 +19,9 @@ class WzglView(View):
             })
 
         roles = Article.objects.all()
+        id = request.session.get('id')
+        # views = Views.objects.all()
+        roles1, allPage, curPage, count = owner_page(request, roles)
         return render(request, 'wenzh_mgr/wzgl.html', locals())
 
     def post(self, request):
@@ -89,6 +93,51 @@ class LunbtView(View):
     def delete(self, request):
         role_id = request.GET.get('id')
         role = WheelTable.objects.get(pk=role_id)
+        role.delete()
+
+        return JsonResponse({
+            'status': 0,
+            'msg': '删除成功!'
+        })
+
+
+class WzplView(View):
+    def get(self, request):
+        if request.GET.get('id', ''):
+            role = Article.objects.get(pk=request.GET.get('id'))
+            return JsonResponse({
+                'id': role.article_id,
+                # 'ud_id': role.ud_id,
+                'title': role.a_title,
+                'talk': role.a_talk,
+            })
+
+        roles = Article.objects.all()
+        return render(request, 'wenzh_mgr/wzpl.html', locals())
+
+    def post(self, request):
+        print(request.POST)
+        id = request.POST.get('article_id', None)  # 注意： form表单页面不建议使用id 字段名
+        # ud_id = request.POST.get('ud_id')
+        a_title = request.POST.get('a_title')
+        a_talk = request.POST.get('a_talk')
+        # 验证是否为空(建议:页面上验证是否为空)
+
+        if id:
+            # 更新
+            role = Article.objects.get(pk=id)
+            # role.ud_id = ud_id
+            role.a_title = a_title
+            role.a_talk = a_talk
+            role.save()
+        else:
+            Article.objects.create(a_title=a_title, a_talk=a_talk)
+
+        return redirect('/wzpl/')
+
+    def delete(self, request):
+        role_id = request.GET.get('id')
+        role = Article.objects.get(pk=role_id)
         role.delete()
 
         return JsonResponse({

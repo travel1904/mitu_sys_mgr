@@ -1,7 +1,7 @@
 {% extends 'basic/base.html' %}
-{% block content_nav_home %}系统管理{% endblock %}
+{% block content_nav_home %}文章管理{% endblock %}
 {% block content_nav %}
-    <li>用户管理</li>
+    <li>评论管理</li>
 {% endblock %}
 
 {% block content %}
@@ -16,29 +16,24 @@
             <table class="table table-bordered table-striped text-center bg-info" width="600" style="box-sizing: border-box;overflow: hidden;">
                 <thead >
                 <tr class="info">
-                    <th class="text-center" style="">用户ID</th>
-                    <th class="text-center">用户名</th>
-                    <th class="text-center">邮箱</th>
-                    <th class="text-center">性别</th>
-                    <th class="text-center">工作</th>
-                    <th class="text-center">头像</th>
-
+                    <th class="text-center" style="">文章ID</th>
+{#                    <th class="text-center">用户ID</th>#}
+                    <th class="text-center">文章标题</th>
+                    <th class="text-center">评论</th>
                     <th class="text-center" width="200px">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for role in roles %}
                     <tr>
-                        <td>{{ role.ud_id }}</td>
-                        <td>{{ role.real_name }}</td>
-                        <td>{{ role.ud_gender }}</td>
-                        <td>{{ role.ud_email }}</td>
-                        <td>{{ role.ud_job }}</td>
-                        <td><img style="height: 50px; width: 100px" src={{ role.ud_img }}></td>
+                        <td>{{ role.article_id }}</td>
+{#                        <td>{{ role.ud_id }}</td>#}
+                        <td>{{ role.a_tltle }}</td>
+                        <td>{{ role.a_talk }}</td>
                         <td>
                             <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
-                               onclick="edit({{ role.ud_id }}, '{{ role.real_name }}', '{{ role.ud_gender }}', '{{ role.ud_email }}', '{{ role.ud_job }}', '{{ role.ud_img }}')">编辑</a>
-                            <a onclick="delete_role({{ role.ud_id }}, '{{ role.real_name }}', '{{ role.ud_img }}', '{{ role.ud_gender }}', '{{ role.ud_email }}', '{{ role.ud_job }}', '{{ role.ud_img }}')" class="btn btn-danger btn-sm">删除</a>
+                               onclick="edit({{ role.article_id }}, '{{ role.a_title }}', '{{ role.a_talk }}')">编辑</a>
+                            <a onclick="delete_role({{ role.article_id }}, '{{ role.a_title }}', '{{ role.a_talk }}')" class="btn btn-danger btn-sm">删除</a>
                         </td>
                     </tr>
 
@@ -62,25 +57,17 @@
                 <form method="post">
                     <div class="modal-body">
                         <ul>
+{#                            <li>#}
+{#                                <label><span>用户ID ：</span></label>#}
+{#                                <input type="text" name="ud_id"/>#}
+{#                            </li>#}
                             <li>
-                                <label><span>用户名 ：</span></label>
-                                <input type="text" name="real_name"/>
+                                <label><span>标题 ：</span></label>
+                                <input type="text" name="a_title"/>
                             </li>
                             <li>
-                                <label><span>头像 ：</span></label>
-                                <input type="text" name="ud_img"/>
-                            </li>
-                            <li>
-                                <label><span>性别 ：</span></label>
-                                <input type="text" name="ud_gender"/>
-                            </li>
-                            <li>
-                                <label><span>邮箱 ：</span></label>
-                                <input type="text" name="ud_email"/>
-                            </li>
-                            <li>
-                                <label><span>工作 ：</span></label>
-                                <input type="text" name="ud_job"/>
+                                <label><span>评论 ：</span></label>
+                                <input type="text" name="a_talk"/>
                             </li>
                         </ul>
                     </div>
@@ -106,30 +93,17 @@
                     <div class="modal-body">
                         <ul>
                             <li>
-                                <label><span>ID ：</span></label>
-                                <input id="edit_id" type="text" name="ud_id"/>
+                                <label><span>文章ID ：</span></label>
+                                <input id="edit_id" type="text" name="article_id"/>
                             </li>
                             <li>
-                                <label><span>用户名 ：</span></label>
-                                <input id="edit_name" type="text" name="real_name"/>
+                                <label><span>标题 ：</span></label>
+                                <input id="edit_title" type="text" name="a_title"/>
                             </li>
                             <li>
-                                <label><span>头像 ：</span></label>
-                                <input id="edit_img"type="text" name="ud_img"/>
+                                <label><span>评论 ：</span></label>
+                                <input id="edit_talk" type="text" name="a_talk"/>
                             </li>
-                            <li>
-                                <label><span>性别 ：</span></label>
-                                <input id="edit_gender" type="text" name="ud_gender"/>
-                            </li>
-                            <li>
-                                <label><span>邮箱 ：</span></label>
-                                <input id="edit_email" type="text" name="ud_email"/>
-                            </li>
-                            <li>
-                                <label><span>工作 ：</span></label>
-                                <input id="edit_job" type="text" name="ud_job"/>
-                            </li>
-                        </ul>
                     </div>
                     <div class="modal-footer" style="z-index:9999;">
                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">取消</button>
@@ -166,21 +140,19 @@
 
 {% block js %}
     <script>
-        function edit(ud_id, real_name, ud_img, ud_gender, ud_email, ud_job) {
-            $('#edit_id').val(ud_id);
-            $('#edit_name').val(real_name);
-            $('#edit_img').val(ud_img);
-            $('#edit_gender').val(ud_gender);
-            $('#edit_email').val(ud_email);
-            $('#edit_job').val(ud_job);
+        function edit(article_id, a_title, a_talk) {
+            $('#edit_id').val(article_id);
+            {#$('#edit_ud_id').val(ud_id);#}
+            $('#edit_title').val(a_title);
+            $('#edit_image').val(a_talk);
 
             $('#edit').modal('show');
         }
         $('.modal-open').find('.modal-backdrop').remove();
         var role_id = 0;
-        function delete_role(ud_id, real_name) {
-            role_id = ud_id;
-            $('#msg').html('是否删除 '+ real_name+" ?");
+        function delete_role(article_id, a_title) {
+            role_id = article_id;
+            $('#msg').html('是否删除 '+ a_title +" ?");
             $('#info').modal('toggle');
         }
 

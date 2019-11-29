@@ -32,7 +32,7 @@ class RoleView(View):
             role.code = code  # 建议不修改code
             role.save()
         else:
-           SysRole.objects.create(name=name, code=code)
+            SysRole.objects.create(name=name, code=code)
 
         return redirect('/role/')
 
@@ -232,6 +232,54 @@ class XttzView(View):
     def delete(self, request):
         role_id = request.GET.get('id')
         role = SysInfo.objects.get(pk=role_id)
+        role.delete()
+
+        return JsonResponse({
+            'status': 0,
+            'msg': '删除成功!'
+        })
+
+
+class QxglView(View):
+    def get(self, request):
+        if request.GET.get('id', ''):
+            role = SysUser.objects.get(pk=request.GET.get('id'))
+            return JsonResponse({
+                'id': role.id,
+                'name': role.name,
+                'auth_string': role.auth_string,
+                'email': role.email,
+                'phone': role.phone
+            })
+
+        roles = SysUser.objects.all()
+        return render(request, 'sys_mgr/qxgl.html', locals())
+
+    def post(self, request):
+        print(request.POST)
+        id = request.POST.get('q_id', None)  # 注意： form表单页面不建议使用id 字段名
+        name = request.POST.get('name')
+        auth_string = request.POST.get('auth_string')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        # 验证是否为空(建议:页面上验证是否为空)
+
+        if id:
+            # 更新
+            role = SysUser.objects.get(pk=id)
+            role.name = name
+            role.auth_string = auth_string
+            role.email = email
+            role.phone = email
+            role.save()
+        else:
+            SysUser.objects.create(name=name, auth_string=auth_string)
+
+        return redirect('/qxgl/')
+
+    def delete(self, request):
+        role_id = request.GET.get('id')
+        role = SysUser.objects.get(pk=role_id)
         role.delete()
 
         return JsonResponse({
