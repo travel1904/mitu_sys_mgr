@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-{#    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>#}
+    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1" style="margin: 5px 0">添加</a>
     <div class="froms" style="width: 100%;
         height: 80%;
         {#position:relative!important;#}
@@ -37,7 +37,7 @@
                         <td>{{ role.is_use }}</td>
                         <td>{{ role.create_time }}</td>
                         <td>
-                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1">添加</a>
+{#                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#add1">添加</a>#}
                             <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
                                onclick="edit({{ role.sys_ticket_id }},'{{ role.st_name }}', '{{ role.st_money }}', '{{ role.st_ticket_desc }}', '{{ role.is_use }}', '{{ role.create_time }}')">编辑</a>
 {#                            <a onclick="delete_role({{ role.sys_ticket_id }},'{{ role.st_name }}', '{{ role.st_money }}', '{{ role.st_ticket_desc }}', '{{ role.is_use }}', '{{ role.create_time }}')" class="btn btn-danger btn-sm">删除</a>#}
